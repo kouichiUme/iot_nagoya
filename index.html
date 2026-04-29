@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iot.nagoya | 世界を測るセンサーとエッジAI</title>
+  <meta name="description" content="iot.nagoya は、センサー、エッジAI、環境計測、時系列データ、センサーフュージョンを扱う技術ポートフォリオです。Lind Instrumentation AI における目と耳として、世界を測る技術を整理します。" />
+  <style>
+    :root {
+      --bg: #f8fbff;
+      --panel: #ffffff;
+      --text: #162033;
+      --muted: #5b667a;
+      --line: #dce7f5;
+      --accent: #2d7ff9;
+      --accent-soft: #e8f2ff;
+      --green: #24a67a;
+      --shadow: 0 18px 45px rgba(36, 78, 130, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+      background: radial-gradient(circle at top left, #eaf5ff 0, transparent 38%), var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(248, 251, 255, 0.78);
+      border-bottom: 1px solid rgba(220, 231, 245, 0.8);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .hero {
+      padding: 96px 0 72px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 1.05;
+      margin: 22px 0 24px;
+      letter-spacing: -0.05em;
+    }
+
+    .lead {
+      font-size: clamp(18px, 2.2vw, 23px);
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 32px;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: 0 10px 24px rgba(36, 78, 130, 0.08);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .visual {
+      position: relative;
+      min-height: 420px;
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(232,242,255,0.9));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .visual::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(45, 127, 249, 0.12);
+      right: -80px;
+      top: -80px;
+    }
+
+    .node {
+      position: relative;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 12px 30px rgba(36, 78, 130, 0.08);
+    }
+
+    .node strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .node span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 32px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.16;
+      margin: 10px 0 12px;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 14px 34px rgba(36, 78, 130, 0.07);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .flow-item {
+      background: var(--accent-soft);
+      border: 1px solid #cfe3ff;
+      border-radius: 20px;
+      padding: 20px;
+      min-height: 150px;
+    }
+
+    .flow-item .num {
+      color: var(--accent);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .flow-item h3 {
+      margin: 8px 0;
+      font-size: 20px;
+    }
+
+    .flow-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .domain-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .domain-card .role {
+      display: inline-flex;
+      color: var(--green);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      padding: 40px 0 60px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .cards,
+      .flow,
+      .domain-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .visual {
+        min-height: auto;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero {
+        padding-top: 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="logo" href="#top">iot.nagoya</a>
+      <nav class="nav-links" aria-label="site navigation">
+        <a href="#concept">Concept</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#projects">Projects</a>
+        <a href="#domains">Domains</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="badge">Sense / Measure / Edge AI</div>
+          <h1>世界を測る。<br />都市を理解する。</h1>
+          <p class="lead">
+            iot.nagoya は、センサー、エッジAI、環境計測、時系列データ、センサーフュージョンを扱う技術ポートフォリオです。
+            Lind Instrumentation AI における「目と耳」として、現場と都市の状態を測る技術を整理します。
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#concept">コンセプトを見る</a>
+            <a class="btn" href="#domains">関連ドメインを見る</a>
+          </div>
+        </div>
+
+        <div class="visual" aria-label="iot.nagoya concept diagram">
+          <div class="node">
+            <strong>Sensor</strong>
+            <span>LiDAR / Depth Camera / SDR / environmental sensing</span>
+          </div>
+          <div class="node">
+            <strong>Edge</strong>
+            <span>embedded system / edge AI / data logger</span>
+          </div>
+          <div class="node">
+            <strong>Time-series</strong>
+            <span>measurement / historian / anomaly detection</span>
+          </div>
+          <div class="node">
+            <strong>Lind Instrumentation AI</strong>
+            <span>世界の状態を測り、人と設備と都市をつなぐ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="concept">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Concept</div>
+          <h2>iot.nagoya は、Lind計装AIの「目と耳」です。</h2>
+          <p>
+            現場のデータは、判断・制御・自動化の出発点です。センサーで測り、エッジで整え、時系列データとして蓄積し、AIや人間の判断へつなぐ。その入口を扱うのが iot.nagoya です。
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>測る</h3>
+            <p>温度、距離、画像、電波、環境、設備状態など、現実世界の変化をデータとして捉えます。</p>
+          </article>
+          <article class="card">
+            <h3>整える</h3>
+            <p>ノイズ、欠損、同期、時系列化、エッジ処理を通じて、使えるデータへ変換します。</p>
+          </article>
+          <article class="card">
+            <h3>つなぐ</h3>
+            <p>計装バックエンド、SCADA、API、AI、ワークフローへ接続し、判断と記録に活かします。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Architecture</div>
+          <h2>センサーから、判断可能なデータへ。</h2>
+          <p>
+            iot.nagoya では、計測そのものだけでなく、データが後続の判断・承認・制御・記録に使える状態になるまでの流れを重視します。
+          </p>
+        </div>
+
+        <div class="flow">
+          <div class="flow-item">
+            <div class="num">01</div>
+            <h3>Sense</h3>
+            <p>センサー、カメラ、LiDAR、SDR、環境計測で世界を測る。</p>
+          </div>
+          <div class="flow-item">
+            <div class="num">02</div>
+            <h3>Edge</h3>
+            <p>エッジデバイスで前処理、同期、圧縮、簡易推論を行う。</p>
+          </div>
+          <div class="flow-item">
+            <div class="num">03</div>
+            <h3>Stream</h3>
+            <p>時系列データ、イベント、アラームとしてバックエンドへ流す。</p>
+          </div>
+          <div class="flow-item">
+            <div class="num">04</div>
+            <h3>Act</h3>
+            <p>STP、AI、人間の承認、移動体制御へ接続する。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Keywords / Projects</div>
+          <h2>扱う技術キーワード</h2>
+          <p>
+            実装メモ、検証ログ、GitHub README、note記事、技術士論文メモへ展開していくための技術テーマです。
+          </p>
+        </div>
+
+        <div class="tags" aria-label="technology keywords">
+          <span class="tag">Sensor</span>
+          <span class="tag">Edge Device</span>
+          <span class="tag">Embedded System</span>
+          <span class="tag">Environmental Sensing</span>
+          <span class="tag">LiDAR</span>
+          <span class="tag">Depth Camera</span>
+          <span class="tag">SDR / Pluto SDR</span>
+          <span class="tag">Time-series Data</span>
+          <span class="tag">Edge AI</span>
+          <span class="tag">Data Logger</span>
+          <span class="tag">Sensor Fusion</span>
+          <span class="tag">Anomaly Detection</span>
+          <span class="tag">Lind Instrumentation AI</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="domains">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Related Domains</div>
+          <h2>測る・動く・通す。</h2>
+          <p>
+            iot.nagoya は、uav.nagoya と stp.nagoya と連携し、Lind Instrumentation AI の技術ポートフォリオを構成します。
+          </p>
+        </div>
+
+        <div class="domain-grid">
+          <article class="domain-card">
+            <div class="role">測る</div>
+            <h3>iot.nagoya</h3>
+            <p>センサー、エッジAI、環境計測。Lindの目と耳。</p>
+          </article>
+          <article class="domain-card">
+            <div class="role">動く</div>
+            <h3>uav.nagoya</h3>
+            <p>ドローン、ローバー、自律移動体。Lindの手足・移動体。</p>
+          </article>
+          <article class="domain-card">
+            <div class="role">通す</div>
+            <h3>stp.nagoya</h3>
+            <p>SCADA、OT、MES、API、承認ワークフロー。Lindの神経系。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>
+        iot.nagoya — Sensors, Edge AI, and Instrumentation for Human-centered City Automation.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
